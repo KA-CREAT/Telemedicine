@@ -42,15 +42,11 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
+        url: process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`,
       },
     ],
   },
-  apis: [
-  "./routes/*.js",
-  "./routes/swagger/*.js"
-]
-
+  apis: ["./routes/*.js", "./routes/swagger/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
@@ -92,6 +88,10 @@ const upload = multer({ storage });
 // ====================
 // Routes
 // ====================
+
+app.get("/", (req, res) => {
+  res.send("Telemedicine Backend Running Successfully");
+});
 
 app.use("/api/user", userRouter);
 app.use("/api/doctor", doctorRouter);
@@ -143,16 +143,12 @@ app.post(
 );
 
 // ====================
-// Static Folders
+// Static Upload Folder
 // ====================
 
 app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads"))
-);
-
-app.use(
-  express.static(path.join(__dirname, "./client/build"))
 );
 
 // ====================
@@ -243,16 +239,6 @@ io.on("connection", (socket) => {
 });
 
 // ====================
-// React SPA Fallback
-// ====================
-
-app.get("*", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "./client/build/index.html")
-  );
-});
-
-// ====================
 // Start Server
 // ====================
 
@@ -260,10 +246,10 @@ server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 
   console.log(
-    `Swagger Docs: http://localhost:${PORT}/api-docs`
+    `Swagger Docs: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}/api-docs`
   );
 
   console.log(
-    `Swagger JSON: http://localhost:${PORT}/swagger.json`
+    `Swagger JSON: ${process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`}/swagger.json`
   );
 });
