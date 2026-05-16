@@ -1,0 +1,14 @@
+.video-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #111;
+}
+
+.local-video, .remote-video {
+  width: 45%;
+  border: 2px solid #fff;
+  border-radius: 10px;
+}
