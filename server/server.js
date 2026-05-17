@@ -157,7 +157,8 @@ app.use(
 
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: "https://telemedicine-7elq.vercel.app",
+    credentials: true,
   },
 });
 
